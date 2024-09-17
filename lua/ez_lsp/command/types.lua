@@ -1,0 +1,3 @@
+---@class ez_lsp.lsp.Subcommand
+---@field impl fun(args:string[], opts: table)
+---@field complete? fun(arg_lead: string): string[]
