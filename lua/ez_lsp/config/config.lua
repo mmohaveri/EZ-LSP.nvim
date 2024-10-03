@@ -18,7 +18,7 @@ local function _load_config_from_name(config_name)
         local lspconfig_name = string.gsub(config_name, LSPCONFIG_PREFIX, "")
         success, loaded_config = pcall(require, "lspconfig.server_configurations." .. lspconfig_name)
     else
-        success, loaded_config = pcall(require, "ez_lsp.server_definitions." .. config_name)
+        success, loaded_config = pcall(require, "ez_lsp.server_configurations." .. config_name)
     end
 
     if not success then return nil end
