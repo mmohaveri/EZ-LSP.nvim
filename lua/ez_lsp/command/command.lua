@@ -31,6 +31,9 @@ function CommandModule.add_subcommands(subcommands)
     end
 end
 
+---@param subcommand_name string
+function CommandModule.remove_subcommands(subcommand_name) _subcommands[subcommand_name] = nil end
+
 function CommandModule.setup()
     local completions = require("ez_lsp.command.completions")
 

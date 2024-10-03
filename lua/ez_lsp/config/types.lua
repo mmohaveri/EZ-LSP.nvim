@@ -27,17 +27,19 @@ ConfigTypes.LifeCycleEvent = {
 ---@field lifecycle_handlers? table<ez_lsp.LifeCycleEvent, elem_or_list<function>>
 ---@field init_options? table
 ---@field event_handlers? ez_lsp.config.EventHandler[]
----@field user_commands? ez_lsp.config.Command[]
+---@field user_commands? ez_lsp.config.UserCommand[]
 ---@field enabled? fun(): boolean
 
 ---@class  ez_lsp.config.EventHandler
 ---@field event_name string
 ---@field callback function
 
----@class  ez_lsp.config.Command
+---@class  ez_lsp.config.UserCommand
 ---@field name string
 ---@field description? string
 ---@field callback function
+---@field nargs? integer | string
+---@field complete? string
 
 ---@class  ez_lsp.config.Diagnostics
 ---@field signs? ez_lsp.config.DiagnosticSigns
@@ -60,7 +62,14 @@ ConfigTypes.LifeCycleEvent = {
 ---- @field autostart? boolean
 ---- @field package _on_attach? fun(client: vim.lsp.Client, bufnr: integer)
 
----@comment  based on the lspconfig.Config class defined in lspconfig/config.lua
+---@comment LSPConfig does not define this explicitly, but based on the configurations defined in it, it follows this structure
+---@class lspconfig.UserCommand
+---@field [number] fun(command: lsp.Command, ctx: table)
+---@field description? string
+---@field nargs? integer | string
+---@field complete? string
+
+---@comment based on the lspconfig.Config class defined in lspconfig/config.lua
 ---@class lspconfig.Config : vim.lsp.ClientConfig
 ---@field enabled? boolean
 ---@field single_file_support? boolean
@@ -70,5 +79,6 @@ ConfigTypes.LifeCycleEvent = {
 ---@field autostart? boolean
 ---@field package _on_attach? fun(client: vim.lsp.Client, bufnr: integer)
 ---@field root_dir? string|fun(filename: string, bufnr: number)
+---@field commands? table<string,fun(command: lsp.Command, ctx: table) | lspconfig.UserCommand>
 
 return ConfigTypes

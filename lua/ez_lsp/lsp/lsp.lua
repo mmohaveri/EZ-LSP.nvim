@@ -109,6 +109,17 @@ local function _is_cmd_valid(cmd)
     return false
 end
 
+---@param commands ez_lsp.config.UserCommand[]
+local function _register_user_commands(commands)
+    --- In future I like to add these commands as subcommands of EZlsp, for example: "EZlsp pyright organize_imports" instead of PyrightOrganizeImports
+    for _, command in ipairs(commands) do
+        vim.api.nvim_create_user_command(command.name, command.callback, {
+            nargs = command.nargs,
+            complete = command.complete,
+        })
+    end
+end
+
 ---@param client_config vim.lsp.ClientConfig
 ---@param root_indicators string[]
 local function _start_lsp_server(client_config, root_indicators)
@@ -129,7 +140,7 @@ local function _start_lsp_server(client_config, root_indicators)
     client_config = _add_root_dir_to_config(client_config, root_indicators)
     vim.lsp.set_log_level(vim.lsp.log_levels.WARN)
 
-    -- _register_user_commands(client_config.commands)
+    _register_user_commands(client_config.commands)
 
     local client = vim.lsp.start(client_config)
     if client == nil then

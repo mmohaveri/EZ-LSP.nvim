@@ -64,8 +64,29 @@ function ConvertorModule.convert_to_lspconfig_to_internal_lsp_definition(lsp_con
         table.insert(event_handlers, handler)
     end
 
-    ---@type  ez_lsp.config.Command[]
+    ---@type  ez_lsp.config.UserCommand[]
     local user_commands = {}
+    for command_name, command_info in pairs(lsp_config.commands) do
+        ---@type  ez_lsp.config.UserCommand
+        local user_command
+
+        if type(command_info) == "function" then
+            user_command = {
+                name = command_name,
+                callback = command_info,
+            }
+        else
+            user_command = {
+                name = command_name,
+                callback = command_info[1],
+                description = command_info.description,
+                nargs = command_info.nargs,
+                complete = command_info.complete,
+            }
+        end
+
+        table.insert(user_commands, user_command)
+    end
 
     ---@type ez_lsp._LSPDefinition
     local internal_lsp_definition = {
