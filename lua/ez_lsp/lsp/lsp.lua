@@ -269,6 +269,12 @@ function LSPModule.restart_server(client)
     vim.notify("Successfully restarted '" .. client_config.name .. "'LSP client.", vim.log.levels.INFO)
 end
 
+---@param client vim.lsp.Client
+function LSPModule.stop_server(client)
+    client.stop()
+    vim.notify("Successfully stopped '" .. client.name .. "'LSP client.", vim.log.levels.INFO)
+end
+
 ---@param servers (ez_lsp.config.LSPDefinition | string | lspconfig.Config)[]
 function LSPModule.setup(servers)
     for _, server in ipairs(servers) do
@@ -276,7 +282,7 @@ function LSPModule.setup(servers)
     end
 end
 
----@return ez_lsp.lsp.ServerInfo
+---@return ez_lsp.lsp.ServerInfo[]
 function LSPModule.list_servers()
     local all_clients = vim.lsp.get_clients()
     ---@type table[string, true]

@@ -41,9 +41,15 @@
         "filereadable",
         "fnamemodify",
         "joinpath",
+        "winid",
+        "lnum",
 
         // Lua
         "pcall",
+        "concat",
+        "gsub",
+        "gmatch",
+        "setmetatable",
 
         //Plugins
         "Noice",
