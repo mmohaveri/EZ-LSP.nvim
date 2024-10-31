@@ -94,8 +94,24 @@ end
 ---@param root_indicators string[]
 ---@return vim.lsp.ClientConfig
 local function _add_root_dir_to_config(client_config, root_indicators)
+    local root_dir = vim.fs.dirname(vim.fs.find(root_indicators, { upward = true })[1])
+
+    if root_dir == nil then
+        root_dir = vim.fn.expand("%:p:h")
+
+        local root_indicators_str = table.concat(root_indicators, ", ")
+        local msg = [[Unable to find the root of the project."
+            None the following files were found in the the directory hierarchy:
+        ]]
+        msg = msg .. root_indicators_str .. [[
+            Using the current directory instead.
+        ]]
+
+        vim.notify(msg, vim.log.levels.WARN)
+    end
+
     return vim.tbl_extend("force", {
-        root_dir = vim.fs.dirname(vim.fs.find(root_indicators, { upward = true })[1]),
+        root_dir = root_dir,
     }, client_config)
 end
 
